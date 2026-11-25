@@ -1,0 +1,25 @@
+name :  Build test Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  DEPLOY_ENV: production
+  
+jobs:
+  build:
+    name: Build 
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.1.0
+      - name: Setup Java
+        uses: actions/setup-java@6.2.0
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Build Maven sans les tests
+        run: mvn clean package -DskipTests
